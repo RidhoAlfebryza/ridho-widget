@@ -1,4 +1,6 @@
-# ridho_uasprakpbk
+# UAS LAB PBK
+#NAMA : MUHAMMAD RIDHO ALFEBRYZA PRATAMA
+#NPM  : 213510278
 
 ## Project setup
 ```
