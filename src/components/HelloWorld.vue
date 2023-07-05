@@ -1,57 +1,66 @@
 <template>
-  <div class="hello">
-    <h1>{{ msg }}</h1>
-    <p>
-      For a guide and recipes on how to configure / customize this project,<br>
-      check out the
-      <a href="https://cli.vuejs.org" target="_blank" rel="noopener">vue-cli documentation</a>.
-    </p>
-    <h3>Installed CLI Plugins</h3>
-    <ul>
-      <li><a href="https://github.com/vuejs/vue-cli/tree/dev/packages/%40vue/cli-plugin-router" target="_blank" rel="noopener">router</a></li>
-    </ul>
-    <h3>Essential Links</h3>
-    <ul>
-      <li><a href="https://vuejs.org" target="_blank" rel="noopener">Core Docs</a></li>
-      <li><a href="https://forum.vuejs.org" target="_blank" rel="noopener">Forum</a></li>
-      <li><a href="https://chat.vuejs.org" target="_blank" rel="noopener">Community Chat</a></li>
-      <li><a href="https://twitter.com/vuejs" target="_blank" rel="noopener">Twitter</a></li>
-      <li><a href="https://news.vuejs.org" target="_blank" rel="noopener">News</a></li>
-    </ul>
-    <h3>Ecosystem</h3>
-    <ul>
-      <li><a href="https://router.vuejs.org" target="_blank" rel="noopener">vue-router</a></li>
-      <li><a href="https://vuex.vuejs.org" target="_blank" rel="noopener">vuex</a></li>
-      <li><a href="https://github.com/vuejs/vue-devtools#vue-devtools" target="_blank" rel="noopener">vue-devtools</a></li>
-      <li><a href="https://vue-loader.vuejs.org" target="_blank" rel="noopener">vue-loader</a></li>
-      <li><a href="https://github.com/vuejs/awesome-vue" target="_blank" rel="noopener">awesome-vue</a></li>
-    </ul>
+  <br>        
+    <h1><center>GENERATE RANDOM IMAGE</center> </h1>
+    
+  <div class="photo-widget">
+    <h2>{{ title }}</h2>
+    <img :src="photoUrl" :alt="title" />
+    <br>
+    <button @click="getRandomPhoto">Load New Photo</button>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'HelloWorld',
-  props: {
-    msg: String
-  }
-}
+  data() {
+    return {
+      title: '',
+      photoUrl: '',
+    };
+  },
+  mounted() {
+    this.getRandomPhoto();
+  },
+  methods: {
+    async getRandomPhoto() {
+      try {
+        const apiKey = '38081527-9df5e7cc02a4f3f576f921d26';
+        const apiUrl = `https://pixabay.com/api/?key=${apiKey}&q=africa&image_type=photo&orientation=horizontal`;
+        const response = await fetch(apiUrl);
+        const data = await response.json();
+        const randomIndex = Math.floor(Math.random() * data.hits.length);
+        const randomPhoto = data.hits[randomIndex];
+        this.title = randomPhoto.tags;
+        this.photoUrl = randomPhoto.webformatURL;
+      } catch (error) {
+        console.error('Error fetching random photo:', error);
+      }
+    },
+  },
+};
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
-  margin: 40px 0 0;
+.photo-widget {
+  border: 1px solid #ccc;
+  padding: 20px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #242424;
+  box-shadow: 0 4px 15px 0 rgba(83, 176, 57, 0.75);
 }
-ul {
-  list-style-type: none;
-  padding: 0;
+.photo-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  max-width: 500px;
+  margin-top: 10px;
 }
-li {
-  display: inline-block;
-  margin: 0 10px;
-}
-a {
-  color: #42b983;
+.photo-container img {
+  max-width: 100%;
+  max-height: 100%;
 }
 </style>
